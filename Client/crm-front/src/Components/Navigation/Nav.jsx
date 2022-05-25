@@ -12,12 +12,12 @@ const Nav = () => {
 
 
   return (
-    <div className='app__navigation'>
+    <nav className='app__navigation'>
         <ul>
             {
                 [{name: 'Contacts', icon: <RiIcons.RiContactsFill /> }, {name: 'Tasks', icon: <FaIcons.FaTasks />}, {name: 'Comments', icon: <FaIcons.FaComments /> }].map((listItem, index) => (
                     <li key={index} onClick = { () => setActive(listItem.name)}>
-                        <a href="#"> 
+                        <a href= { `#${ listItem.name }` }> 
                             <span className= { active === listItem.name ? 'navigation__icon-active' : 'app__navigation-icon' }>
                                 { listItem.icon }
                             </span>
@@ -30,7 +30,7 @@ const Nav = () => {
                 ))
             }
         </ul>
-    </div>
+    </nav>
   )
 }
 
