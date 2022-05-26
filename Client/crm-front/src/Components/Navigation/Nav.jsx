@@ -6,10 +6,10 @@ import * as RiIcons from 'react-icons/ri';
 
 import './Nav.scss';
 
-const Nav = () => {
+const Nav = (props) => {
 
     const [active, setActive] = useState('Contacts');
-
+    props.uiHandler(active);
 
   return (
     <nav className='app__navigation'>
