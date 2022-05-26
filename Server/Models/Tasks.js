@@ -7,7 +7,7 @@ const taskSchema = new mongoose.Schema( {
         required: true,
     },
 
-    responsable: {
+    responsible: {
       type: String,
       required: true,
     },
