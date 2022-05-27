@@ -12,7 +12,7 @@
     }
 }
 
-.app__info-section {
+.app__contacts-info-section {
     display: flex;
     flex: 1;
     height: 100%;
@@ -30,8 +30,17 @@
         box-shadow: var(--box-shadow);
         transition: all 300ms ease;
         color: var(--color-dark-variant);
-    }
-    
+    } 
 }
 
+.app__contact-detailed-info {
+    margin: 2rem 0;
+    padding: 1rem;
+    border-bottom: solid;
+    border-width: 1px;
 
+    :last-of-type {
+        border-bottom: none;
+        border-color: transparent;
+    }
+}
