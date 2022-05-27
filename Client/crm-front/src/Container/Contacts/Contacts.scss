@@ -30,17 +30,65 @@
         box-shadow: var(--box-shadow);
         transition: all 300ms ease;
         color: var(--color-dark-variant);
+
+        h4 {
+        
+        }
+
+        @media screen and (max-width: 1200px) {
+            width: 90%;
+
+            h4 {
+                width: 50px;
+            }
+        }
     } 
 }
 
 .app__contact-detailed-info {
-    margin: 2rem 0;
     padding: 1rem;
-    border-bottom: solid;
-    border-width: 1px;
+    gap: 0.5rem;
+    margin-right: 2rem;
+    border-bottom: 1px dashed;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
 
-    :last-of-type {
-        border-bottom: none;
-        border-color: transparent;
+    .app__contact-icons {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        width: fit-content;
+        position: absolute;
+        margin-left: 40%;
+        gap: 1rem;
+        padding: 1rem;
+        font-size: 1.1rem;
+        justify-content: center;
+        align-items: center;
+
+
+        svg {
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            border-radius: 50%;
+        }
+
+        :hover {
+            background-color: var(--color-dark-variant);
+            color: white;
+        }
+
+        @media screen and (max-width: 1200px) {
+            margin-left: 25%;
+            gap: 0.7rem;
+            font-size: 1.3rem;
+        }
+    }
+
+    &:last-child {
+        border-bottom: 0px transparent;
     }
 }
