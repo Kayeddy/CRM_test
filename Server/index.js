@@ -4,9 +4,11 @@ const contactModel = require('./Models/Contacts');
 const taskModel = require('./Models/Tasks');
 const commentModel = require('./Models/Comments');
 const { json } = require("express");
-
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 mongoose.connect('mongodb+srv://Eddy:1477@crm.ulvukwt.mongodb.net/CRM_data?retryWrites=true&w=majority');
@@ -14,6 +16,26 @@ mongoose.connect('mongodb+srv://Eddy:1477@crm.ulvukwt.mongodb.net/CRM_data?retry
 app.get("/getContacts", (req, res) => {
 
     contactModel.find({}, (err, data) => {
+
+        err ? console.log(json(err)) : res.json(data);
+
+    });
+
+});
+
+app.get("/getTasks", (req, res) => {
+
+    taskModel.find({}, (err, data) => {
+
+        err ? console.log(json(err)) : res.json(data);
+
+    });
+
+});
+
+app.get("/getComments", (req, res) => {
+
+    commentModel.find({}, (err, data) => {
 
         err ? console.log(json(err)) : res.json(data);
 
