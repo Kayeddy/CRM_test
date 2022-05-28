@@ -9,7 +9,7 @@
 
     .app__taskModal-content {
         width: 500px;
-        height: 600px;
+        height: 700px;
         border-radius: 12px;
         background-color: var(--color-white);
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -125,8 +125,15 @@
         }
     }
 
+    .taskModal__calendar {
+        margin: 1rem 0;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
     @media screen and (max-width: 768px) {
         width: 100%;
         margin: 1rem 0;
     }
 }
+

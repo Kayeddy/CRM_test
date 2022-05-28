@@ -1,8 +1,6 @@
 import { React, useState } from 'react';
 import './TaskModal.scss';
-import DatePicker from "react-datepicker";
-import "react-datepicker/src/stylesheets/datepicker.scss";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ResponsiveCalendar } from 'react-responsive-calendar'
 
 const TaskModal = ({ modalType, closeModal, saveChanges, data}) => {
 
@@ -38,16 +36,10 @@ const TaskModal = ({ modalType, closeModal, saveChanges, data}) => {
               <div className='app__flex taskModal__date-section'>
                 <p className='p-text'> Current end date is: </p>
                 <p className='p-text'> { data.end_date } </p>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      label="Basic example"
-                      value={value}
-                      onChange={(newValue) => {
-                        setValue(newValue);
-                      }}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
+                <br /> 
+                <p className='p-text'> Select a new date </p>
+                <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' onChange={(newDate) => setPickedDate(newDate)}/>
+
               </div>
 
               <fieldset>
