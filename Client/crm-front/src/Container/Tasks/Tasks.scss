@@ -96,3 +96,20 @@
         border-bottom: 0px transparent;
     }
 }
+
+.app__task-modal, .app__task-modal-overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url(../../Assets/bgWhite.png);
+    background-image: var(--color-white);
+    position: fixed;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
