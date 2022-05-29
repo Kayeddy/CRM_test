@@ -6,19 +6,17 @@
   min-height: 100vh;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 1;
   
-  padding: 4rem 2rem;
+  padding: 6rem 1rem;
   
-  @media screen and (max-width: 450px) {
-    padding: 4rem 1rem 2rem;
-  };
 }
 
 .app__flex {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .app__whitebg {

@@ -36,7 +36,7 @@
 
 body {
   background: url('../../crm-front/src/Assets/bgWhite.png');  
-  background-color: var(--white-color);  
+  background-color: gainsboro;  
   background-size: cover;
   background-repeat: repeat;
 }

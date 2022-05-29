@@ -1,4 +1,8 @@
-import React from 'react';
+import { React, useState, useEffect} from 'react';
+import Axios from 'axios';
+import { ContactModal } from '../../Components';
+
+
 
 import './Contacts.scss';
 
@@ -7,24 +11,102 @@ import * as MdIcons from 'react-icons/md';
 
 
 const Contacts = () => {
+
+  const [contactList, setContactList] = useState([]);
+  const [selectedContact, setSelectedContact] = useState([]);
+  const [createMode, setCreateMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  
+
+  useEffect(() => {
+
+    getContacts();
+
+  }, []);
+
+  const saveChanges = () => {
+
+  }
+
+  const getModalType = () => {
+    if(editMode)
+      return 'edit';
+    else if(createMode)
+      return 'create';
+  }
+
+  const getContacts = () => {
+    Axios.get('http://localhost:3001/getContacts').then(res => {
+      setContactList(res.data);
+      console.log(res.data);
+    });
+  }
+
+  const manageContact = (contactData, operationType) => {
+    const contact = {first_name: contactData.first_name, middle_name: contactData.middle_name, last_name: contactData.last_name, email: contactData.email, phone_number: contactData.phone_number, birth_date: contactData.birth_date, address: contactData.address, type_of_contact: contactData.contact_type, origin: contactData.contact_origin };
+
+    if(operationType === 'edit')
+    {
+      Axios.post('http://localhost:3001/editContact', contact).then(res => console.log(res + ' Contact created'));
+    }
+    else 
+    {
+      Axios.post('http://localhost:3001/createContact', contact).then(res => console.log(res + ' Contact created'));
+      getContacts();
+    }
+
+  }
+
+
   return (
     <div className='app__contacts'>
-        <h2 className='p-text'> Client list </h2>
 
-        <div className='app__contacts-info-section'>
+      {
+         editMode || createMode ? 
+         <ContactModal 
+            closeEdit= { setEditMode } 
+            closeCreate = { setCreateMode } 
+            saveChanges= { saveChanges } 
+            data = { selectedContact } 
+            modalType = { getModalType() } 
+            contactDetails = { manageContact }
+          />
 
-          <div className='app__contacts-panel'>
-            {
-              [{ name: 'Mike Wolfenstein', age: 24 }, { name: 'Andrew Serrano', age: 21 }, { name: 'Carlos Windsenberg', age: 28 }].map( (item, index) => (
-                <div key={index} className= 'app__contact-detailed-info'>
-                    <h4 className=''> { item.name } <span className='app__contact-icons'> <AiIcons.AiFillEdit /> <MdIcons.MdDelete /></span>  </h4>
-                    <p className=''> Age : { item.age } </p>
+         :
+
+         <>
+          <h2 className='p-text'> Contact list </h2>
+
+            <div className='app__contacts-info-section'>
+
+            <div className='app__contact-panel'>
+                  {
+                      contactList.map( (item, index) => (
+                        <div key={index} className= 'app__contact-detailed-info'>
+                          <div className='contact__information'>
+                            <p> { item.first_name + item.last_name } </p>
+                            <p> { item.phone_number } </p>
+                          </div>
+
+                          <div className='app__contact-icons'>
+                            <AiIcons.AiFillEdit onClick={() => { setSelectedContact(item); setEditMode(true); }}/> <MdIcons.MdDelete />
+                          </div>
+
+                        </div>
+                      ))
+                    }
                 </div>
-              ))
-            }
-          </div>
-          
-        </div>
+
+              <div>
+                  <button className='app__contact-add-btn' onClick={() => setCreateMode(true)}>
+                      Add contact
+                  </button>
+                </div>
+              
+            </div>
+         </>
+      }
+        
     </div>
   )
 }

@@ -5,11 +5,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
 
     h2 {
         text-align: center;
+        font-size: 1.5rem;
     }
+
 }
 
 .app__contacts-info-section {
@@ -17,58 +20,58 @@
     flex: 1;
     height: 100%;
     width: 80%;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     margin-top: 2rem;
+    flex-direction: column;
 
-    .app__contacts-panel {
+    .app__contact-panel {
         background: var(--color-white);
-        min-width: 60%;
-        height: 500px;
+        width: 100%;
+        height: fit-content;
         border-radius: var(--card-border-radius);
-        padding: var(--card-padding);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
         text-align: center;
         box-shadow: var(--box-shadow);
         transition: all 300ms ease;
         color: var(--color-dark-variant);
-
-        h4 {
-        
-        }
-
-        @media screen and (max-width: 1200px) {
-            width: 90%;
-
-            h4 {
-                width: 50px;
-            }
-        }
-    } 
+        flex-direction: column;
+    }
+    
+    .app__contact-add-btn {
+        margin: 1rem;
+        padding: 0.3rem 1rem;
+        font-size: 1.2rem;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        color: var(--color-white);
+        font-family: var(--font-base);
+        background: var(--color-info-dark);
+    }
 }
 
 .app__contact-detailed-info {
-    padding: 1rem;
+    padding: 2rem;
     gap: 0.5rem;
-    margin-right: 2rem;
     border-bottom: 1px dashed;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
     flex-wrap: wrap;
+    width: 100%;
 
     .app__contact-icons {
         display: flex;
         flex-direction: row;
-        flex: 1;
-        width: fit-content;
-        position: absolute;
-        margin-left: 40%;
-        gap: 1rem;
-        padding: 1rem;
+        gap: 1.5rem;
         font-size: 1.1rem;
         justify-content: center;
         align-items: center;
-
 
         svg {
             cursor: pointer;
@@ -82,13 +85,44 @@
         }
 
         @media screen and (max-width: 1200px) {
-            margin-left: 25%;
-            gap: 0.7rem;
+            gap: 1rem;
             font-size: 1.3rem;
         }
+
+        @media screen and (min-width: 1200px) {
+            gap: 1rem;
+            font-size: 1.4rem;
+        }
+
+    }
+
+    p {
+        margin: 0.4rem 0;
+    }
+
+    .contact__information {
+        padding: 0.6rem;
     }
 
     &:last-child {
         border-bottom: 0px transparent;
     }
+
+    @media screen and (max-width: 900px) {
+
+        padding: 1rem 0;
+        justify-content: center;
+        margin-top: 2rem;
+
+        .app__contact-icons {
+            display: flex;
+            flex-direction: row;
+            gap: 1.5rem;
+            font-size: 1.2rem;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+    }
+
 }

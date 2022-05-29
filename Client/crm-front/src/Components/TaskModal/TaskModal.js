@@ -1,8 +1,8 @@
 import { React, useState } from 'react';
 import './TaskModal.scss';
-import { ResponsiveCalendar } from 'react-responsive-calendar'
 
-const TaskModal = ({ modalType, closeModal, saveChanges, data}) => {
+
+const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
 
   const [taskRequired, setTaskRequired] = useState(false);
   const [pickedDate, setPickedDate] = useState(new Date())
@@ -11,80 +11,157 @@ const TaskModal = ({ modalType, closeModal, saveChanges, data}) => {
     option ? setTaskRequired(true) : setTaskRequired(false);
   }
 
+  console.log(modalType);
   return (
 
     <div className='app__taskModal'> 
 
       <div className='app__taskModal-content'>
 
-        <div className='app__taskModal-header'>
-          <h1 className='p-text'> Task information </h1>
-        </div>
+        {
+          modalType === 'edit'? 
+          <>
+            <div className='app__taskModal-header'>
+              <h1 className='p-text'> Edit task </h1>
+            </div>
 
-        <div className='app__taskModal-body'>
+            <div className='app__taskModal-body'>
 
-          <form  div className='app__taskModal-form app__flex'>
+              <form  div className='app__taskModal-form app__flex'>
+                  
+                  <div className='app__flex'>
+                    <p className='p-text'> Task title </p>
+                    <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' value={ data.title }/>
+                  </div>
+
+                  <div className='app__flex'>
+                    <p className='p-text'> Responsible </p>
+                    <input type="text" className='p-text task__input-field' placeholder='Responsible' name= 'responsible' value={ data.responsible } />
+                  </div>
+
+                  <div className='app__flex taskModal__date-section'>
+                    <p className='p-text'> Current end date is: </p>
+                    <p className='p-text'> { data.end_date } </p>
+                    <br /> 
+                    <p className='p-text'> Select a new date </p>
+                    <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' onChange={(newDate) => setPickedDate(newDate)}/>
+
+                  </div>
+
+                  <fieldset>
+                      <legend className='p-text'> Is this task required? </legend>
+                      <div>
+                      <label>
+                        <input
+                          type="radio"
+                          value="Yes"
+                          checked={ taskRequired === true }
+                          onChange={() => changeRequired(true)}
+                        />
+                        Yes
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>
+                        <input
+                          type="radio"
+                          value="No"
+                          checked={ taskRequired === false }
+                          onChange={() => changeRequired(false)}
+                        />
+                        No
+                      </label>
+                    </div>
+
+                  </fieldset>
+                  
+              </form>
+
+            </div>
+
+            <div className='app__taskModal-footer'>
               
-              <div className='app__flex'>
-                <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' value={ data.title}/>
-              </div>
+              <button className='app_taskModal-cancel-btn' onClick={() => closeEdit(false)}>
+                Cancel
+              </button>
 
-              <div className='app__flex'>
-                <input type="text" className='p-text task__input-field' placeholder='Responsible' name= 'responsible' value={ data.responsible} />
-              </div>
+              <button className='app__taskModal-save-btn' onClick={() => { closeEdit(false) }}>
+                Save
+              </button>
 
-              <div className='app__flex taskModal__date-section'>
-                <p className='p-text'> Current end date is: </p>
-                <p className='p-text'> { data.end_date } </p>
-                <br /> 
-                <p className='p-text'> Select a new date </p>
-                <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' onChange={(newDate) => setPickedDate(newDate)}/>
+            </div>
+          </>
+          :
+          <>
+            <div className='app__taskModal-header'>
+              <h1 className='p-text'> Create task </h1>
+            </div>
 
-              </div>
+            <div className='app__taskModal-body'>
 
-              <fieldset>
-                  <legend className='p-text'> Is this task required? </legend>
-                  <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Yes"
-                      checked={ taskRequired === true }
-                      onChange={() => changeRequired(true)}
-                    />
-                    Yes
-                  </label>
-                </div>
+              <form  div className='app__taskModal-form app__flex'>
+                  
+                  <div className='app__flex'>
+                    <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' />
+                  </div>
 
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="No"
-                      checked={ taskRequired === false }
-                      onChange={() => changeRequired(false)}
-                    />
-                    No
-                  </label>
-                </div>
+                  <div className='app__flex'>
+                    <input type="text" className='p-text task__input-field' placeholder='Responsible' name= 'responsible' />
+                  </div>
 
-              </fieldset>
+                  <div className='app__flex taskModal__date-section'>
+                    <p className='p-text'> Select end date </p>
+                    <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' onChange={(newDate) => setPickedDate(newDate)}/>
+
+                  </div>
+
+                  <fieldset>
+                      <legend className='p-text'> Is this task required? </legend>
+                      <div>
+                      <label>
+                        <input
+                          type="radio"
+                          value="Yes"
+                          checked={ taskRequired === true }
+                          onChange={() => changeRequired(true)}
+                        />
+                        Yes
+                      </label>
+                    </div>
+
+                    <div>
+                      <label>
+                        <input
+                          type="radio"
+                          value="No"
+                          checked={ taskRequired === false }
+                          onChange={() => changeRequired(false)}
+                        />
+                        No
+                      </label>
+                    </div>
+
+                  </fieldset>
+                  
+              </form>
+
+            </div>
+
+            <div className='app__taskModal-footer'>
               
-          </form>
+              <button className='app_taskModal-cancel-btn' onClick={() => closeCreate(false)}>
+                Cancel
+              </button>
 
-        </div>
+              <button className='app__taskModal-save-btn' onClick={() => { closeCreate(false) }}>
+                Create
+              </button>
 
-        <div className='app__taskModal-footer'>
-          
-          <button className='app_taskModal-cancel-btn' onClick={() => closeModal(false)}>
-            Cancel
-          </button>
-
-          <button className='app__taskModal-save-btn' onClick={() => { closeModal(false) }}>
-            Save
-          </button>
-
-        </div>
+            </div>
+          </>
+        }
+        
 
       </div>
     </div>

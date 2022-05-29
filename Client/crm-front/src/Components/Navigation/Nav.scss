@@ -1,7 +1,7 @@
 .app__navigation {
     width: 40%;
     height: 70px;
-    background: rgba(50, 50, 50, 0.60);
+    background: rgba(50, 50, 50, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.18);
     position: fixed;
     z-index: 2;
@@ -11,6 +11,7 @@
     align-items: center;
     border-radius: 10px;
     bottom: 0.5rem;
+    margin-top: 50px;
 
     ul {
         display: flex;
@@ -46,6 +47,7 @@
                     padding-top: 0.3rem;
                     background-color: transparent;
                     background: transparent;
+                    color: var(--color-dark);
                 }
 
                 .app__navigation-list-item {
@@ -62,7 +64,7 @@
                     align-items: center;
                     width: 4rem;
                     height: 4rem;
-                    background-color: #222327;
+                    background-color: var(--color-dark-variant);
                     border-radius: 50%;
                     position: relative;
                     transform: translateY(-25px);
