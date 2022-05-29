@@ -1,21 +1,22 @@
 .app__taskModal {
     width: fit-content;
-    height: fit-content;
+    height: 460px;
     position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 70vh;
+    margin-top: 60vh;
 
     .app__taskModal-content {
-        width: 500px;
-        height: 700px;
+        width: 100%;
+        height: 100%;
         border-radius: 12px;
         background-color: var(--color-white);
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         display: flex;
         flex-direction: column;
         padding: 25px;
+        overflow-y: scroll;
 
         .app__taskModal-header {
             display: flex;

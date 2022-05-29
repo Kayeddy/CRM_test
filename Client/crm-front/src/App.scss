@@ -2,6 +2,18 @@
 .app {
   background-color: var(--primary-color);
   font-family: var(--font-base);
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  
+  padding: 4rem 2rem;
+  
+  @media screen and (max-width: 450px) {
+    padding: 4rem 1rem 2rem;
+  };
 }
 
 .app__flex {
