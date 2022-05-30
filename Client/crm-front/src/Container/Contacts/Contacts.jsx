@@ -42,7 +42,17 @@ const Contacts = () => {
 
   const manageContact = (contactData, operationType) => {
 
-    const contact = {first_name: contactData.first_name, middle_name: contactData.middle_name, last_name: contactData.last_name, email: contactData.email, phone_number: contactData.phone_number, birth_date: contactData.birth_date, address: contactData.address, type_of_contact: contactData.contact_type, origin: contactData.contact_origin };
+    const contact = {
+      first_name: contactData.first_name !== '' ? contactData.first_name : selectedContact.first_name, 
+      middle_name: contactData.middle_name !== '' ? contactData.middle_name : selectedContact.middle_name, 
+      last_name: contactData.last_name !== '' ? contactData.last_name : selectedContact.last_name,
+      email: contactData.email !== '' ? contactData.email : selectedContact.email, 
+      phone_number: contactData.phone_number !== '' ? contactData.phone_number : selectedContact.phone_number, 
+      birth_date: contactData.birth_date !== '' ? contactData.birth_date : selectedContact.birth_date, 
+      address: contactData.address !== '' ? contactData.address : selectedContact.address, 
+      type_of_contact: contactData.contact_type !== '' ? contactData.type_of_contact : selectedContact.type_of_contact, 
+      origin: contactData.contact_origin !== '' ? contactData.origin : selectedContact.origin 
+    };
 
     if(operationType === 'edit')
     {

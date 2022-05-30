@@ -45,7 +45,13 @@ const Tasks = () => {
 
   const manageTask = (taskData, operationType) => {
 
-    const task = {title: taskData.title, responsible: `${selectedContact.first_name} ${selectedContact.last_name}`, responsible_id: selectedContact._id, end_date: taskData.end_date, summary_required: taskData.summary_required };
+    const task = {
+      title: taskData.title, 
+      responsible: `${selectedContact.first_name} ${selectedContact.last_name}`, 
+      responsible_id: selectedContact._id, 
+      end_date: taskData.end_date !== '' ? taskData.end_date : selectedTask.end_date, 
+      summary_required: taskData.summary_required !== '' ? taskData.summary_required : selectedTask.summary_required,
+    };
 
     if(operationType === 'edit')
     {

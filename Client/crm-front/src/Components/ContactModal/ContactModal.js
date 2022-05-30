@@ -1,11 +1,14 @@
 import { React, useState } from 'react';
+import { Tooltip } from '@mui/material';
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import './ContactModal.scss';
 
 
 const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data }) => {
 
-  const [pickedDate, setPickedDate] = useState(null);
+
   const [formData, setFormData] = useState({first_name: '', middle_name: '', last_name: '', email: '', phone_number: '', birth_date: '', address: '', contact_type: '', contact_origin: '' });
+  const [formFilled, setFormFilled] = useState(false);
 
   const handleDataInput = (e) => {
     const { name, value } = e.target;
@@ -14,7 +17,36 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
 
   }
 
+  const checkForm = () => {
+    (
+      formData.first_name !== ''  
+      &&
+      formData.middle_name !== ''
+      &&
+      formData.last_name !== ''
+      &&
+      formData.email !== ''
+      && 
+      formData.phone_number !== ''
+      &&
+      formData.birth_date !== ''
+      &&
+      formData.address !== ''
+      &&
+      formData.contact_type !== ''
+      &&
+      formData.contact_type !== ''
+    )
+    ? 
+     setFormFilled(true)
+    :
+     setFormFilled(false)
+  }
 
+  const manageSubmission = () => {
+    checkForm();
+    formFilled ?  (contactDetails(formData, 'create') && closeCreate(false)) : console.log('form is not completely filled');
+  }
   return (
 
     <div className='app__contactModal'> 
@@ -59,7 +91,7 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
 
                   <div className='app__flex contactModal__date-section'>
                     <p className='p-text'> Select a new Birthdate </p>
-                    <input type= 'date' name='birth_date' placeholder="dd-mm-yyyy" className='contactModal__calendar' name= 'birth_date' onChange={ handleDataInput } />
+                    <input type= 'date' name='birth_date' placeholder="dd-mm-yyyy" className='contactModal__calendar' onChange={ handleDataInput } />
                   </div>
 
                   <div className='app__flex'>
@@ -182,7 +214,7 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
                 Cancel
               </button>
 
-              <button className='app__contactModal-save-btn' onClick={() => { contactDetails(formData, 'create'); closeCreate(false) }}>
+              <button className='app__contactModal-save-btn' onClick={ manageSubmission } >
                 Create
               </button>
 
