@@ -4,8 +4,8 @@ import './ContactModal.scss';
 
 const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data }) => {
 
-  const [pickedDate, setPickedDate] = useState(new Date());
-  const [formData, setFormData] = useState({first_name: '', middle_name: '', last_name: '', email: '', phone_number: '', birth_date: pickedDate, address: '', contact_type: '', contact_origin: '' });
+  const [pickedDate, setPickedDate] = useState(null);
+  const [formData, setFormData] = useState({first_name: '', middle_name: '', last_name: '', email: '', phone_number: '', birth_date: '', address: '', contact_type: '', contact_origin: '' });
 
   const handleDataInput = (e) => {
     const { name, value } = e.target;
@@ -34,37 +34,37 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
                   
                   <div className='app__flex'>
                     <p className='p-text'> First name </p>
-                    <input type="text" className='p-text contact__input-field' placeholder= { data.first_name } name= 'first_name' onChange= {handleDataInput} />
+                    <input type="text" className='p-text contact__input-field' placeholder= { data.first_name } name= 'first_name' onChange= {handleDataInput} defaultValue = {data.first_name}/>
                   </div>
 
                   <div className='app__flex'>
                     <p className='p-text'> Middle name </p>
-                    <input type="text" className='p-text contact__input-field' placeholder= { data.middle_name } name= 'middle_name' onChange= {handleDataInput} />
+                    <input type="text" className='p-text contact__input-field' placeholder= { data.middle_name } name= 'middle_name' onChange= {handleDataInput} defaultValue = {data.middle_name}/>
                   </div>
 
                   <div className='app__flex'>
                     <p className='p-text'> Last name </p>
-                    <input type="text" className='p-text contact__input-field' placeholder= { data.last_name } name= 'last_name' onChange= {handleDataInput} />
+                    <input type="text" className='p-text contact__input-field' placeholder= { data.last_name } name= 'last_name' onChange= {handleDataInput} defaultValue = {data.last_name}/>
                   </div>
 
                   <div className='app__flex'>
                     <p className='p-text'> Email </p>
-                    <input type="text" className='p-text contact__input-field' placeholder= { data.email } name= 'email' onChange= {handleDataInput} />
+                    <input type="text" className='p-text contact__input-field' placeholder= { data.email } name= 'email' onChange= {handleDataInput} defaultValue = {data.email}/>
                   </div>
 
                   <div className='app__flex'>
                     <p className='p-text'> Phone number </p>
-                    <input type="tel" className='p-text contact__input-field' placeholder= { data.phone_number } name= 'phone_number' onChange= {handleDataInput} />
+                    <input type="tel" className='p-text contact__input-field' placeholder= { data.phone_number } name= 'phone_number' onChange= {handleDataInput} defaultValue = {data.phone_number}/>
                   </div>
 
                   <div className='app__flex contactModal__date-section'>
                     <p className='p-text'> Select a new Birthdate </p>
-                    <input type= 'date' name='birth_date' placeholder="dd-mm-yyyy" className='contactModal__calendar' onChange={ date => setPickedDate(new Date(date.target.value).toISOString()) } />
+                    <input type= 'date' name='birth_date' placeholder="dd-mm-yyyy" className='contactModal__calendar' name= 'birth_date' onChange={ handleDataInput } />
                   </div>
 
                   <div className='app__flex'>
                     <p className='p-text'> Address </p>
-                    <input type="text" className='p-text contact__input-field' placeholder= { data.address } name= 'address' onChange= {handleDataInput} />
+                    <input type="text" className='p-text contact__input-field' placeholder= { data.address } name= 'address' onChange= {handleDataInput} defaultValue = {data.address}/>
                   </div>
 
                   <div className='app__flex contactModal__contactType-section'>
@@ -99,7 +99,7 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
                 Cancel
               </button>
 
-              <button className='app__contactModal-save-btn' onClick={() => { console.info(formData) }}>
+              <button className='app__contactModal-save-btn' onClick={() => { contactDetails(formData, 'edit'); closeEdit(false) }}>
                 Save
               </button>
 
@@ -142,7 +142,7 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
 
                   <div className='app__flex contactModal__date-section'>
                     <p className='p-text'> Select a new Birthdate </p>
-                    <input type= 'date' name='birth_date' placeholder="dd-mm-yyyy" className='contactModal__calendar' onChange={ date => setPickedDate(new Date(date.target.value).toISOString()) } required/>
+                    <input type= 'date' name='birth_date' placeholder="dd-mm-yyyy" className='contactModal__calendar' onChange={ handleDataInput } required/>
                   </div>
 
                   <div className='app__flex'>
@@ -182,7 +182,7 @@ const ContactModal = ({ modalType, closeCreate, closeEdit, contactDetails, data 
                 Cancel
               </button>
 
-              <button className='app__contactModal-save-btn' onClick={() => { contactDetails(formData, 'create'); closeCreate(false)}}>
+              <button className='app__contactModal-save-btn' onClick={() => { contactDetails(formData, 'create'); closeCreate(false) }}>
                 Create
               </button>
 

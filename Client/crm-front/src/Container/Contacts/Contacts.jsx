@@ -13,6 +13,7 @@ import * as MdIcons from 'react-icons/md';
 const Contacts = () => {
 
   const [contactList, setContactList] = useState([]);
+  const[filteredContactList, setFilteredContactList] = useState(null);
   const [selectedContact, setSelectedContact] = useState([]);
   const [createMode, setCreateMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -24,9 +25,6 @@ const Contacts = () => {
 
   }, []);
 
-  const saveChanges = () => {
-
-  }
 
   const getModalType = () => {
     if(editMode)
@@ -43,20 +41,32 @@ const Contacts = () => {
   }
 
   const manageContact = (contactData, operationType) => {
+
     const contact = {first_name: contactData.first_name, middle_name: contactData.middle_name, last_name: contactData.last_name, email: contactData.email, phone_number: contactData.phone_number, birth_date: contactData.birth_date, address: contactData.address, type_of_contact: contactData.contact_type, origin: contactData.contact_origin };
 
     if(operationType === 'edit')
     {
-      Axios.post('http://localhost:3001/editContact', contact).then(res => console.log(res + ' Contact created'));
+      Axios.put(`http://localhost:3001/editContact/${selectedContact._id}`, contact).then(res => console.log(res + ' Contact edition succesful')).catch(e => console.log(e));
     }
-    else 
+    else if (operationType === 'create')
     {
       Axios.post('http://localhost:3001/createContact', contact).then(res => console.log(res + ' Contact created'));
-      getContacts();
+    }
+    else
+    {
+      Axios.delete(`http://localhost:3001/deleteContact/${contactData._id}`, contact).then(res => console.log(res + ' Contact deleted succesfully')).catch(e => console.log(e));
     }
 
   }
 
+  const searchContacts = (e) => {
+    const { name, value } = e.target;
+
+    setFilteredContactList(contactList.filter((contact) => { 
+      return contact.first_name.toLowerCase().includes(value.toLowerCase());
+    }));
+
+  }
 
   return (
     <div className='app__contacts'>
@@ -66,7 +76,6 @@ const Contacts = () => {
          <ContactModal 
             closeEdit= { setEditMode } 
             closeCreate = { setCreateMode } 
-            saveChanges= { saveChanges } 
             data = { selectedContact } 
             modalType = { getModalType() } 
             contactDetails = { manageContact }
@@ -79,23 +88,46 @@ const Contacts = () => {
 
             <div className='app__contacts-info-section'>
 
-            <div className='app__contact-panel'>
-                  {
-                      contactList.map( (item, index) => (
-                        <div key={index} className= 'app__contact-detailed-info'>
-                          <div className='contact__information'>
-                            <p> { item.first_name + item.last_name } </p>
-                            <p> { item.phone_number } </p>
-                          </div>
+              <div className= 'app__contact-input-field'>
+              <input type="text" className='p-text contact__input-field' placeholder= 'Search...' onChange = { searchContacts }/>
+              </div>
 
-                          <div className='app__contact-icons'>
-                            <AiIcons.AiFillEdit onClick={() => { setSelectedContact(item); setEditMode(true); }}/> <MdIcons.MdDelete />
-                          </div>
+              <div className='app__contact-panel'>
+                    {
+                      filteredContactList === null ? 
 
-                        </div>
-                      ))
-                    }
-                </div>
+                        contactList.map( (item, index) => (
+                          <div key={item._id} className= 'app__contact-detailed-info'>
+                            <div className='contact__information'>
+                              <p> { `${item.first_name}  ${item.last_name}` } </p>
+                              <p> { item.phone_number } </p>
+                            </div>
+
+                            <div className='app__contact-icons'>
+                              <AiIcons.AiFillEdit onClick={() => { setSelectedContact(item); setEditMode(true); }} /> <MdIcons.MdDelete  onClick={() => { manageContact(item, 'delete') }} />
+                            </div>
+
+                          </div>
+                        ))
+
+                        :
+
+                        filteredContactList.map( (item, index) => (
+                          <div key={item._id} className= 'app__contact-detailed-info'>
+                            <div className='contact__information'>
+                              <p> { `${item.first_name}  ${item.last_name}` } </p>
+                              <p> { item.phone_number } </p>
+                            </div>
+
+                            <div className='app__contact-icons'>
+                              <AiIcons.AiFillEdit onClick={() => { setSelectedContact(item); setEditMode(true); }} /> <MdIcons.MdDelete  onClick={() => { manageContact(item, 'delete') }} />
+                            </div>
+
+                          </div>
+                        ))
+
+                      }
+                  </div>
 
               <div>
                   <button className='app__contact-add-btn' onClick={() => setCreateMode(true)}>

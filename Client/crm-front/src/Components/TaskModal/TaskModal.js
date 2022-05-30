@@ -2,16 +2,18 @@ import { React, useState } from 'react';
 import './TaskModal.scss';
 
 
-const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
+const TaskModal = ({ modalType, closeCreate, closeEdit, taskDetails, data}) => {
 
-  const [taskRequired, setTaskRequired] = useState(false);
-  const [pickedDate, setPickedDate] = useState(new Date())
+  const [pickedDate, setPickedDate] = useState(null);
+  const [formData, setFormData] = useState({title: '', end_date: '', summary_required: ''});
 
-  const changeRequired = (option) => {
-    option ? setTaskRequired(true) : setTaskRequired(false);
+  const handleDataInput = (e) => {
+    const { name, value } = e.target;
+
+    setFormData({ ...formData, [name]: value });
+
   }
-
-  console.log(modalType);
+  
   return (
 
     <div className='app__taskModal'> 
@@ -31,12 +33,7 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                   
                   <div className='app__flex'>
                     <p className='p-text'> Task title </p>
-                    <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' value={ data.title }/>
-                  </div>
-
-                  <div className='app__flex'>
-                    <p className='p-text'> Responsible </p>
-                    <input type="text" className='p-text task__input-field' placeholder='Responsible' name= 'responsible' value={ data.responsible } />
+                    <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' defaultValue= {data.title} onChange= {handleDataInput}/>
                   </div>
 
                   <div className='app__flex taskModal__date-section'>
@@ -44,7 +41,7 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                     <p className='p-text'> { data.end_date } </p>
                     <br /> 
                     <p className='p-text'> Select a new date </p>
-                    <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' onChange={(newDate) => setPickedDate(newDate)}/>
+                    <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' name= 'end_date' onChange={ handleDataInput } />
 
                   </div>
 
@@ -54,9 +51,9 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                       <label>
                         <input
                           type="radio"
-                          value="Yes"
-                          checked={ taskRequired === true }
-                          onChange={() => changeRequired(true)}
+                          name= "summary_required"
+                          value= {true}
+                          onChange={ handleDataInput}
                         />
                         Yes
                       </label>
@@ -66,9 +63,9 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                       <label>
                         <input
                           type="radio"
-                          value="No"
-                          checked={ taskRequired === false }
-                          onChange={() => changeRequired(false)}
+                          name= "summary_required"
+                          value= {false}
+                          onChange={ handleDataInput}
                         />
                         No
                       </label>
@@ -86,7 +83,7 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                 Cancel
               </button>
 
-              <button className='app__taskModal-save-btn' onClick={() => { closeEdit(false) }}>
+              <button className='app__taskModal-save-btn' onClick={() => { taskDetails(formData, 'edit'); closeEdit(false) }}>
                 Save
               </button>
 
@@ -103,28 +100,24 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
               <form  div className='app__taskModal-form app__flex'>
                   
                   <div className='app__flex'>
-                    <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' />
-                  </div>
-
-                  <div className='app__flex'>
-                    <input type="text" className='p-text task__input-field' placeholder='Responsible' name= 'responsible' />
+                    <input type="text" className='p-text task__input-field' placeholder='Task title' name= 'title' onChange= {handleDataInput}/>
                   </div>
 
                   <div className='app__flex taskModal__date-section'>
                     <p className='p-text'> Select end date </p>
-                    <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' onChange={(newDate) => setPickedDate(newDate)}/>
+                    <input type= 'date' placeholder="dd-mm-yyyy" className='taskModal__calendar' name= 'end_date' onChange={ handleDataInput }/>
 
                   </div>
 
                   <fieldset>
-                      <legend className='p-text'> Is this task required? </legend>
+                      <legend className='p-text'> Is a summary of this task required? </legend>
                       <div>
                       <label>
                         <input
                           type="radio"
-                          value="Yes"
-                          checked={ taskRequired === true }
-                          onChange={() => changeRequired(true)}
+                          name= "summary_required"
+                          value= {true}
+                          onChange={ handleDataInput}
                         />
                         Yes
                       </label>
@@ -134,9 +127,9 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                       <label>
                         <input
                           type="radio"
-                          value="No"
-                          checked={ taskRequired === false }
-                          onChange={() => changeRequired(false)}
+                          name= "summary_required"
+                          value= {false}
+                          onChange={handleDataInput}
                         />
                         No
                       </label>
@@ -154,7 +147,7 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, saveChanges, data}) => {
                 Cancel
               </button>
 
-              <button className='app__taskModal-save-btn' onClick={() => { closeCreate(false) }}>
+              <button className='app__taskModal-save-btn' onClick={() => { taskDetails(formData, 'create'); closeCreate(false) }} >
                 Create
               </button>
 

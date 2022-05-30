@@ -12,6 +12,11 @@ const taskSchema = new mongoose.Schema( {
       required: true,
     },
 
+    responsible_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    }, 
+
     end_date: {
       type: Date,
       required: true,
