@@ -127,12 +127,26 @@ app.put("/editTask/:id", async(req, res) => {
 
 });
 
-app.post("/editComment", async(req, res) => {
-    const comment = req.body;
-    const newComment = new contactModel(comment);
-    await newComment.save();
+app.put("/editComment/:id", async(req, res) => {
+    const comment = {
+        content: req.body.content,
+        recipient: req.body.recipient,
+        delivery_date: req.body.delivery_date,
+        _id: req.params.id,
+    }
 
-    res.json(comment);
+    commentModel.findByIdAndUpdate(comment._id, comment, function(err, response) {
+        if(err)
+        {
+            console.log(err);
+
+        }
+        else {
+            res.statusCode === 200 ? res.json("Comment has been updated") : res.json("Couldn't update comment");
+        }
+
+    });
+
 });
 
 
@@ -163,6 +177,55 @@ app.delete("/deleteContact/:id", async(req, res) => {
 
     });
     
+});
+
+
+app.delete("/deleteTask/:id", async(req, res) => {
+    
+    const task = {
+        title: req.body.title,
+        responsible: req.body.responsible,
+        responsible_id: req.body.responsible_id,
+        end_date: req.body.end_date,
+        summary_required: req.body.summary_required,
+        _id: req.params.id,
+    }
+
+    taskModel.findByIdAndDelete(task._id, task, function(err, response) {
+        if(err)
+        {
+            console.log(err);
+
+        }
+        else {
+            res.statusCode === 200 ? res.json("Task has been deleted") : res.json("Couldn't delete task");
+        }
+
+    });
+    
+});
+
+app.delete("/deleteComment/:id", async(req, res) => {
+
+    const comment = {
+        content: req.body.content,
+        recipient: req.body.recipient,
+        delivery_date: req.body.delivery_date,
+        _id: req.params.id,
+    }
+
+    commentModel.findByIdAndDelete(comment._id, comment, function(err, response) {
+        if(err)
+        {
+            console.log(err);
+
+        }
+        else {
+            res.statusCode === 200 ? res.json("Comment has been deleted") : res.json("Couldn't delete comment");
+        }
+
+    });
+
 });
 
 app.listen(3001, () => {

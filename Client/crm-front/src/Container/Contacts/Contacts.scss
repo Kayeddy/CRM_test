@@ -115,6 +115,12 @@
 
     .contact__information {
         padding: 0.6rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
     }
 
     &:last-child {

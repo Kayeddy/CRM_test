@@ -1,10 +1,12 @@
 import { React, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import './TaskModal.scss';
 
 
 const TaskModal = ({ modalType, closeCreate, closeEdit, taskDetails, data}) => {
 
-  const [pickedDate, setPickedDate] = useState(null);
   const [formData, setFormData] = useState({title: '', end_date: '', summary_required: ''});
 
   const handleDataInput = (e) => {
@@ -12,6 +14,28 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, taskDetails, data}) => {
 
     setFormData({ ...formData, [name]: value });
 
+  }
+
+
+  const manageSubmission = () => {
+    if (formData.title !== '' && formData.end_date !== '' && formData.summary_required !== '') {
+      taskDetails(formData, 'create') 
+      closeCreate(false) 
+    }
+     
+    else {
+      handleNotifications('notice', 'Please fill out the form completely before you can continue');
+    }
+  }
+
+  const handleNotifications = async( type, message ) => {
+      const MySwal = withReactContent(Swal)
+
+      await MySwal.fire({
+        title: <strong> { type === 'notice' ? 'Heads up!' : type === 'success' ? 'Nice!' : 'Oops...' } </strong>,
+        html: <i> { message } </i>,
+        icon: type === 'notice' ? 'info' : type === 'success' ? 'success' : 'error'
+    });
   }
   
   return (
@@ -147,7 +171,7 @@ const TaskModal = ({ modalType, closeCreate, closeEdit, taskDetails, data}) => {
                 Cancel
               </button>
 
-              <button className='app__taskModal-save-btn' onClick={() => { taskDetails(formData, 'create'); closeCreate(false) }} >
+              <button className='app__taskModal-save-btn' onClick={ manageSubmission } >
                 Create
               </button>
 

@@ -1,7 +1,9 @@
 import { React, useState, useEffect} from 'react';
 import Axios from 'axios';
 import { ContactModal } from '../../Components';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { motion } from 'framer-motion';
 
 
 import './Contacts.scss';
@@ -36,7 +38,16 @@ const Contacts = () => {
   const getContacts = () => {
     Axios.get('http://localhost:3001/getContacts').then(res => {
       setContactList(res.data);
-      console.log(res.data);
+    });
+  }
+
+  const handleNotifications = async( type, message ) => {
+      const MySwal = withReactContent(Swal)
+
+      await MySwal.fire({
+        title: <strong> { type === 'notice' ? 'Heads up!' : type === 'success' ? 'Nice!' : 'Oops...' } </strong>,
+        html: <i> { message } </i>,
+        icon: type === 'notice' ? 'info' : type === 'success' ? 'success' : 'error'
     });
   }
 
@@ -50,21 +61,21 @@ const Contacts = () => {
       phone_number: contactData.phone_number !== '' ? contactData.phone_number : selectedContact.phone_number, 
       birth_date: contactData.birth_date !== '' ? contactData.birth_date : selectedContact.birth_date, 
       address: contactData.address !== '' ? contactData.address : selectedContact.address, 
-      type_of_contact: contactData.contact_type !== '' ? contactData.type_of_contact : selectedContact.type_of_contact, 
-      origin: contactData.contact_origin !== '' ? contactData.origin : selectedContact.origin 
+      type_of_contact: contactData.contact_type !== '' ? contactData.contact_type : selectedContact.type_of_contact, 
+      origin: contactData.contact_origin !== '' ? contactData.contact_origin : selectedContact.origin 
     };
 
     if(operationType === 'edit')
     {
-      Axios.put(`http://localhost:3001/editContact/${selectedContact._id}`, contact).then(res => console.log(res + ' Contact edition succesful')).catch(e => console.log(e));
+      Axios.put(`http://localhost:3001/editContact/${selectedContact._id}`, contact).then(res => handleNotifications('success', 'Contact was edited succesfully')).catch(e => handleNotifications('error', `Couldn't edit contact \n ${e}`));
     }
     else if (operationType === 'create')
     {
-      Axios.post('http://localhost:3001/createContact', contact).then(res => console.log(res + ' Contact created'));
+      Axios.post('http://localhost:3001/createContact', contact).then(res => handleNotifications('success', 'Contact was created succesfully')).catch(e => handleNotifications('error', `Couldn't create contact \n ${e}`));
     }
     else
     {
-      Axios.delete(`http://localhost:3001/deleteContact/${contactData._id}`, contact).then(res => console.log(res + ' Contact deleted succesfully')).catch(e => console.log(e));
+      Axios.delete(`http://localhost:3001/deleteContact/${contactData._id}`, contact).then(res => handleNotifications('success', 'Contact was deleted succesfully')).catch(e => handleNotifications('error', `Couldn't delete contact \n ${e}`));
     }
 
   }
@@ -78,8 +89,47 @@ const Contacts = () => {
 
   }
 
+  const showContactDetails = async(contact) => {
+    const MySwal = withReactContent(Swal)
+
+      await MySwal.fire({
+        title: <strong> Contact details </strong>,
+        html: 
+          <i>
+            <b> First name: </b> { contact.first_name } 
+            <br></br>
+            <br></br>
+            <b> Middle name: </b> { contact.middle_name } 
+            <br></br>
+            <br></br>
+            <b> Last name: </b> { contact.last_name } 
+            <br></br>
+            <br></br>
+            <b> Email: </b> { contact.email } 
+            <br></br>
+            <br></br>
+            <b> phone number: </b> { contact.phone_number } 
+            <br></br>
+            <br></br>
+            <b> Birthdate: </b> { contact.birth_date } 
+            <br></br>
+            <br></br>
+            <b> Address: </b> { contact.address } 
+            <br></br>
+            <br></br>
+            <b> Type of contact: </b> { contact.type_of_contact } 
+            <br></br>
+            <br></br>
+            <b> Origin: </b> { contact.origin } 
+          </i>,
+    });
+  }
+
   return (
-    <div className='app__contacts'>
+    <motion.div className='app__contacts'
+      whileInView={{ x: [-100, 0], opacity: [0, 1] }}
+      transition= {{ duration: 0.5 }}
+    >
 
       {
          editMode || createMode ? 
@@ -108,7 +158,7 @@ const Contacts = () => {
 
                         contactList.map( (item, index) => (
                           <div key={item._id} className= 'app__contact-detailed-info'>
-                            <div className='contact__information'>
+                            <div className='contact__information' onClick= { () => showContactDetails(item) } style= {{ cursor: 'pointer' }}>
                               <p> { `${item.first_name}  ${item.last_name}` } </p>
                               <p> { item.phone_number } </p>
                             </div>
@@ -149,7 +199,7 @@ const Contacts = () => {
          </>
       }
         
-    </div>
+    </motion.div>
   )
 }
 

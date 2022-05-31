@@ -2,13 +2,8 @@ const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema( { 
 
-    sender: {
-        type: String,
-        required: true,
-    },
-
     recipient: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
 

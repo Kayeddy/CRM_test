@@ -4,10 +4,14 @@ import { TaskModal } from '../../Components';
 import * as IoIcons from 'react-icons/io';
 import * as AiIcons from 'react-icons/ai';
 import * as MdIcons from 'react-icons/md';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { motion } from 'framer-motion';
 
 
 
-import './Tasks.scss' 
+
+import './Tasks.scss';
 
 const Tasks = () => {
 
@@ -43,6 +47,15 @@ const Tasks = () => {
       return 'create';
   }
 
+  const handleNotifications = async( type, message ) => {
+      const MySwal = withReactContent(Swal)
+
+      await MySwal.fire({
+        title: <strong> { type === 'notice' ? 'Heads up!' : type === 'success' ? 'Nice!' : 'Oops...' } </strong>,
+        html: <i> { message } </i>,
+        icon: type === 'notice' ? 'info' : type === 'success' ? 'success' : 'error'
+    });
+  }
   const manageTask = (taskData, operationType) => {
 
     const task = {
@@ -55,22 +68,61 @@ const Tasks = () => {
 
     if(operationType === 'edit')
     {
-      Axios.put(`http://localhost:3001/editTask/${selectedTask._id}`, task).then(res => console.log(res + ' Task edition succesful')).catch(e => console.log(e));
+      Axios.put(`http://localhost:3001/editTask/${selectedTask._id}`, task).then(res => handleNotifications('success', 'Task edited succesfully')).catch(e => handleNotifications('error', `Couldn't edit task \n ${e}`));
     }
     else if (operationType === 'create')
     {
-      Axios.post('http://localhost:3001/createTask', task).then(res => console.log(res + ' Task created'));
+      Axios.post('http://localhost:3001/createTask', task).then(res => handleNotifications('success', 'Task created succesfully')).catch(e => handleNotifications('error', `Couldn't create task \n ${e}`));
     }
     else
     {
-      Axios.delete(`http://localhost:3001/deleteTask/${selectedTask._id}`, task).then(res => console.log(res + ' Task deleted succesfully')).catch(e => console.log(e));
+      Axios.delete(`http://localhost:3001/deleteTask/${taskData._id}`, task).then(res => handleNotifications('success', 'Task deleted succesfully')).catch(e => handleNotifications('error', `Couldn't delete task \n ${e}`));
     }
 
 
   }
 
+  const showContactDetails = async(contact) => {
+    const MySwal = withReactContent(Swal)
+
+      await MySwal.fire({
+        title: <strong> Contact details </strong>,
+        html: 
+          <i>
+            <b> First name: </b> { contact.first_name } 
+            <br></br>
+            <br></br>
+            <b> Middle name: </b> { contact.middle_name } 
+            <br></br>
+            <br></br>
+            <b> Last name: </b> { contact.last_name } 
+            <br></br>
+            <br></br>
+            <b> Email: </b> { contact.email } 
+            <br></br>
+            <br></br>
+            <b> phone number: </b> { contact.phone_number } 
+            <br></br>
+            <br></br>
+            <b> Birthdate: </b> { contact.birth_date } 
+            <br></br>
+            <br></br>
+            <b> Address: </b> { contact.address } 
+            <br></br>
+            <br></br>
+            <b> Type of contact: </b> { contact.type_of_contact } 
+            <br></br>
+            <br></br>
+            <b> Origin: </b> { contact.origin } 
+          </i>,
+    });
+  }
+
   return (
-    <div className='app__tasks'>
+    <motion.div className='app__tasks'
+      whileInView={{ y: [-100, 0], opacity: [0, 1] }}
+      transition= {{ duration: 0.5 }}
+    >
 
       {
         editMode || createMode ? 
@@ -90,7 +142,7 @@ const Tasks = () => {
                   contactList.map( (item, index) => (
                     <div key={index} className= 'app__task-detailed-info'>
 
-                      <div className='task__information'>
+                      <div className='task__information' onClick= { () => showContactDetails(item) } style= {{ cursor: 'pointer' }}>
                         <h4> <b> Responsible: </b> { `${item.first_name} ${item.last_name}` }   </h4>
                       </div>
 
@@ -112,7 +164,7 @@ const Tasks = () => {
                                 <p> Requires summary: { JSON.stringify(task.summary_required) === 'true' ? 'Yes' : 'No'} </p>
 
                                 <div className='app__task-icons'>
-                                  <AiIcons.AiFillEdit onClick={() => { setSelectedTask(task); setSelectedContact(item); setEditMode(true); }} /> <MdIcons.MdDelete  onClick={() => { manageTask(item, 'delete') }} />
+                                  <AiIcons.AiFillEdit onClick={() => { setSelectedTask(task); setSelectedContact(item); setEditMode(true); }} /> <MdIcons.MdDelete  onClick={() => { manageTask(task, 'delete') }} />
                                 </div>
 
                               </div>
@@ -134,7 +186,7 @@ const Tasks = () => {
       
       }
     
-    </div>
+    </motion.div>
   )
 }
 
