@@ -22,6 +22,11 @@ const Comments = () => {
 
   useEffect(() => {
 
+    fetchData();
+
+  }, []);
+
+  const fetchData = () => {
     Axios.get('http://localhost:3001/getContacts').then(res => {
       setContactList(res.data);
     });
@@ -30,11 +35,6 @@ const Comments = () => {
       setcommentList(res.data);
     });
     
-
-  }, []);
-
-  const fetchcontactcomments = () => {
-  
   }
 
   const getModalType = () => {
@@ -75,7 +75,9 @@ const Comments = () => {
       Axios.delete(`http://localhost:3001/deleteComment/${commentData._id}`, comment).then(res => handleNotifications('success', 'Comment deleted succesfully')).catch(e => handleNotifications('error', `Couldn't delete comment \n ${e}`));
     }
 
-
+    setTimeout(() => {
+      fetchData();
+    }, 500);
   }
 
   const showContactDetails = async(contact) => {
@@ -157,7 +159,7 @@ const Comments = () => {
                               <div className= 'contact__comment-details' key = {`comment-${index}`}>
                                     
                                 <p> { comment.content} </p>
-                                <p className= 'comment__delivery-date'> <b>Sent on:</b> { comment.delivery_date} </p>
+                                <p className= 'comment__delivery-date'> <b>Posted on:</b> { comment.delivery_date} </p>
 
                                 <div className='app__comment-icons'>
                                   <AiIcons.AiFillEdit onClick={() => { setSelectedComment(comment); setSelectedContact(item); setEditMode(true); }} /> <MdIcons.MdDelete  onClick={() => { manageComment(comment, 'delete') }} />

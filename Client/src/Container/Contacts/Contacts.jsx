@@ -68,6 +68,7 @@ const Contacts = () => {
     if(operationType === 'edit')
     {
       Axios.put(`http://localhost:3001/editContact/${selectedContact._id}`, contact).then(res => handleNotifications('success', 'Contact was edited succesfully')).catch(e => handleNotifications('error', `Couldn't edit contact \n ${e}`));
+      
     }
     else if (operationType === 'create')
     {
@@ -78,6 +79,9 @@ const Contacts = () => {
       Axios.delete(`http://localhost:3001/deleteContact/${contactData._id}`, contact).then(res => handleNotifications('success', 'Contact was deleted succesfully')).catch(e => handleNotifications('error', `Couldn't delete contact \n ${e}`));
     }
 
+    setTimeout(() => {
+      getContacts();
+    }, 500);
   }
 
   const searchContacts = (e) => {

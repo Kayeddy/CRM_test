@@ -25,6 +25,12 @@ const Tasks = () => {
 
   useEffect(() => {
 
+    fetchData();
+
+  }, []);
+
+  const fetchData = () => {
+    
     Axios.get('http://localhost:3001/getContacts').then(res => {
       setContactList(res.data);
     });
@@ -33,11 +39,6 @@ const Tasks = () => {
       setTaskList(res.data);
     });
     
-
-  }, []);
-
-  const fetchcontactTasks = () => {
-  
   }
 
   const getModalType = () => {
@@ -78,7 +79,10 @@ const Tasks = () => {
     {
       Axios.delete(`http://localhost:3001/deleteTask/${taskData._id}`, task).then(res => handleNotifications('success', 'Task deleted succesfully')).catch(e => handleNotifications('error', `Couldn't delete task \n ${e}`));
     }
-
+    
+    setTimeout(() => {
+      fetchData();
+    }, 500);
 
   }
 
